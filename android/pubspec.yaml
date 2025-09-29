@@ -1,0 +1,38 @@
+name: datawiping
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI essentials
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+
+  # State management
+  provider: ^6.1.2
+
+  # Local storage (offline auth tokens, settings, etc.)
+  shared_preferences: ^2.3.2
+
+  # Theming + smooth switching (latest supported)
+  animated_theme_switcher: ^2.0.10
+
+  # Loading overlay for async actions
+  loading_overlay: ^0.4.2
+
+  # SVG support for logos/icons
+  flutter_svg: ^2.0.10+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

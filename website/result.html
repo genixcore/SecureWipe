@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Result - SecureDataWiping</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --legend-dark-blue: #0A2A5B;
+            --primary-blue: #1C64F2;
+            --background-blue: #F0F5FF;
+            --card-white: #FFFFFF;
+            --success-green: #10B981;
+            --error-red: #EF4444;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --border-color: #E2E8F0;
+        }
+
+        body.result-body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-blue);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .result-container {
+            width: 100%;
+            max-width: 520px;
+            text-align: center;
+        }
+
+        .result-card {
+            background-color: var(--card-white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px -15px rgba(100, 116, 139, 0.2);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        .result-card.success {
+            border-top: 5px solid var(--success-green);
+        }
+
+        .result-card.error {
+            border-top: 5px solid var(--error-red);
+        }
+
+        .result-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--legend-dark-blue);
+            margin: 16px 0 12px 0;
+        }
+
+        .result-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin: 0 auto 32px auto;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .confirmation-details {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .detail-item:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .detail-value code {
+            background-color: #F1F5F9;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .detail-value.success-text {
+            color: var(--success-green);
+        }
+
+        .detail-value.error-text {
+            color: var(--error-red);
+        }
+
+        .action-wrapper {
+            margin-top: 16px;
+        }
+
+        .btn-action {
+            display: inline-block;
+            background-color: var(--primary-blue);
+            color: var(--card-white);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 14px 48px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-action:hover {
+            background-color: #1A5ADF;
+        }
+
+        .btn-action:active {
+            transform: scale(0.98);
+        }
+        
+        /* --- Icons --- */
+        .icon-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+        .checkmark, .crossmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 4;
+            stroke-miterlimit: 10;
+        }
+
+        /* --- Success Checkmark --- */
+        .checkmark {
+            stroke: var(--success-green);
+            animation: scale .3s ease-in-out both;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 4;
+            stroke: var(--success-green);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark__check {
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        /* --- Error Cross --- */
+        .crossmark {
+            stroke: var(--error-red);
+            animation: scale .3s ease-in-out both;
+        }
+        .crossmark__line {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .crossmark__line:nth-child(2) {
+             animation-delay: 0.2s;
+        }
+
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+    </style>
+</head>
+<body class="result-body">
+
+    <div class="result-container">
+        <div id="resultCard" class="result-card">
+            <div id="iconWrapper" class="icon-wrapper"></div>
+            <h1 id="resultTitle" class="result-title"></h1>
+            <p id="resultSubtitle" class="result-subtitle"></p>
+            <div id="details" class="confirmation-details"></div>
+            <div class="action-wrapper">
+                <a id="actionButton" href="#" class="btn-action"></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get query parameters
+        const params = new URLSearchParams(window.location.search);
+        const serial = params.get("serial") || "N/A";
+        const status = params.get("status");
+
+        // Get elements
+        const card = document.getElementById("resultCard");
+        const iconWrapper = document.getElementById("iconWrapper");
+        const title = document.getElementById("resultTitle");
+        const subtitle = document.getElementById("resultSubtitle");
+        const details = document.getElementById("details");
+        const actionButton = document.getElementById("actionButton");
+
+        if (status === "correct") {
+            card.classList.add("success");
+            iconWrapper.innerHTML = `
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>`;
+            
+            // UPDATED SUCCESS MESSAGE
+            title.textContent = "Verification Successful";
+            subtitle.textContent = "Secure wiping is verified and has been successfully completed.";
+
+            details.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Serial Number</span>
+                    <span class="detail-value"><code>${serial}</code></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Result</span>
+                    <span class="detail-value success-text">Completed</span>
+                </div>`;
+
+            actionButton.textContent = "Done";
+            actionButton.href = "serial.html"; // Or a homepage like index.html
+
+        } else {
+            card.classList.add("error");
+            iconWrapper.innerHTML = `
+                <svg class="crossmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <line class="crossmark__line" x1="16" y1="16" x2="36" y2="36"/>
+                    <line class="crossmark__line" x1="36" y1="16" x2="16" y2="36"/>
+                </svg>`;
+
+            // UPDATED ERROR MESSAGE
+            title.textContent = "Invalid Serial Number";
+            subtitle.textContent = "The serial number you entered is not valid. Please go back to re-enter your serial number.";
+            
+            details.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label">Entered Serial</span>
+                    <span class="detail-value"><code>${serial}</code></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Result</span>
+                    <span class="detail-value error-text">Invalid</span>
+                </div>`;
+            
+            // UPDATED BUTTON TO PROMPT RE-ENTRY
+            actionButton.textContent = "Try Again";
+            actionButton.href = "serial.html"; 
+        }
+    </script>
+</body>
+</html>

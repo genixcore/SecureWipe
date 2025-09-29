@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Verification - SecureDataWiping</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Load the valid serial numbers -->
+  <script src="data.js"></script>
+</head>
+<body class="verify-body">
+
+  <div class="verify-container">
+    <div class="verify-card">
+      
+      <div class="verify-header">
+        <div class="header-icon-wrapper">
+          <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" 
+               viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </div>
+        <h1 class="verify-title">Verification Required</h1>
+        <p class="verify-subtitle">
+          Enter your product serial number to Verify the secure wiping protocol.
+        </p>
+      </div>
+
+      <form class="verify-form" onsubmit="verifySerial(event)">
+        <div class="form-group">
+          <label for="serialNumber" class="form-label">Serial Number</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18M3 12h18M3 18h18"></path>
+            </svg>
+            <input type="text" id="serialNumber" class="form-input" 
+                   placeholder="XXXX-XXXX-XXXX-XXXX" required>
+          </div>
+        </div>
+
+        <p class="help-text">
+          Your 16-character key is on the Certificate of Purchase.
+        </p>
+
+        <button type="submit" class="btn-submit">Verify</button>
+      </form>
+      
+    </div>
+
+    <div class="verify-footer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+      <p>End-to-End Encrypted Verification</p>
+    </div>
+  </div>
+
+  <script>
+    function verifySerial(event) {
+      event.preventDefault(); // stop form refresh
+
+      const serial = document.getElementById("serialNumber").value.trim();
+      const result = validSerials.includes(serial) ? "correct" : "wrong";
+
+      // Redirect to result.html and pass both serial + result
+      window.location.href = "result.html?serial=" + encodeURIComponent(serial) + "&status=" + result;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GenixWipe - Final Sanitization Certificate</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script> 
+    
+    <style>
+        .preview-container {
+            max-width: 900px;
+            width: 95%;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .certificate-title {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* --- Certificate Body Styles (Unchanged) --- */
+        .certificate-body-container {
+            border: 2px solid #333;
+            padding: 0;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .cert-section-header {
+            background-color: #555;
+            color: white;
+            padding: 8px 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-top: 1px solid #333;
+        }
+        .cert-row {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+        }
+        .cert-field {
+            padding: 8px 15px;
+            min-height: 40px; 
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid #ccc;
+        }
+        .cert-field:last-child {
+            border-right: none;
+        }
+        .cert-label {
+            font-size: 0.75rem;
+            color: #555;
+            font-weight: 500;
+        }
+        .cert-value {
+            font-size: 0.9rem;
+            color: #000;
+            font-weight: 600;
+            margin-top: 2px;
+            word-wrap: break-word;
+        }
+        .cert-span-1 { flex: 1; }
+        .cert-span-2 { flex: 2; }
+        .cert-span-3 { flex: 3; }
+
+        .cert-row.signature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid #ccc;
+        }
+        .cert-row.signature-row .cert-field {
+            border-bottom: none;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+
+        @media (max-width: 768px) {
+            .cert-row { flex-direction: column; }
+            .cert-field { border-right: none; border-bottom: 1px solid #ccc; }
+            .cert-row.signature-row { display: flex; flex-direction: column; }
+            .button-row { flex-direction: column; gap: 15px;}
+            .button-row .btn-primary { width: 100% !important;}
+        }
+
+        @media print {
+            .app-header, .app-footer, .button-row { display: none; }
+            .preview-container { box-shadow: none; padding: 0; max-width: 100%; width: 100%; }
+        }
+    </style>
+</head>
+<body class="splash-layout">
+    <header class="app-header">
+        <h1>Final Certificate Preview</h1>
+    </header>
+
+    <main class="app-main-content">
+        <div class="card-panel preview-container">
+            
+            <div class="certificate-title">CERTIFICATE OF SANITIZATION</div>
+            
+            <div class="certificate-body-container" id="certificate-data-display">
+                <p style="padding: 20px;">Loading certificate data...</p>
+            </div>
+            
+            <div class="button-row">
+                <button type="button" class="btn-primary" id="back-to-summary-btn" style="width: 250px; background-color: #6c757d; margin-top: 40px;">
+                    < Back to Summary
+                </button>
+                <button type="button" class="btn-primary" id="download-final-pdf" style="width: 250px; background-color: #28a745; margin-top: 40px;">
+                    Download Certificate
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 GenixWipe. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // --- DATA EXTRACTION AND DISPLAY LOGIC (Unchanged from original) ---
+
+        function getDisplayValue(data, key) {
+            let value = data[key];
+            if (value === undefined || value === null || value === '') return 'N/A';
+            if (Array.isArray(value)) {
+                return value.map(v => v.charAt(0).toUpperCase() + v.slice(1)).join(', ');
+            }
+            return value;
+        }
+
+        function loadCertificateDetails() {
+            const dataString = localStorage.getItem('certificateDetails');
+            const container = document.getElementById('certificate-data-display'); 
+
+            if (!dataString) {
+                container.innerHTML = "<p style='padding: 20px;'>Error: No certificate details found. Please submit the details form first.</p>";
+                return;
+            }
+
+            const data = JSON.parse(dataString);
+            let html = '';
+
+            const createField = (label, key, span = 1) => `
+                <div class="cert-field cert-span-${span}">
+                    <div class="cert-label">${label}:</div>
+                    <div class="cert-value">${getDisplayValue(data, key)}</div>
+                </div>
+            `;
+            
+            const createSignatureField = (label, key, dateKey) => `
+                <div class="cert-field">
+                    <div class="cert-label">${label}:</div>
+                    <div class="cert-value" style="font-style: italic;">${getDisplayValue(data, key)}</div>
+                </div>
+                <div class="cert-field">
+                    <div class="cert-label">Date:</div>
+                    <div class="cert-value">${getDisplayValue(data, dateKey)}</div>
+                </div>
+            `;
+
+            // --- PERSON PERFORMING SANITIZATION ---
+            html += '<div class="cert-section-header">PERSON PERFORMING SANITIZATION</div>';
+            html += '<div class="cert-row">';
+            html += createField('Name', 'name', 3);
+            html += createField('Title', 'title', 2);
+            html += '</div>';
+            html += '<div class="cert-row">';
+            html += createField('Organization', 'organization', 2);
+            html += createField('Location', 'location', 2);
+            html += createField('Phone', 'phone', 1);
+            html += '</div>';
+
+            // --- MEDIA INFORMATION ---
+            html += '<div class="cert-section-header">MEDIA INFORMATION</div>';
+            html += '<div class="cert-row">';
+            html += createField('Make/Vendor', 'make-vendor', 2);
+            html += createField('Model Number', 'model-number', 3);
+            html += '</div>';
+            html += '<div class="cert-row">';
+            html += createField('Serial Number', 'serial-number', 2);
+            html += createField('Media Property Number', 'media-property-number', 3);
+            html += '</div>';
+            html += '<div class="cert-row">';
+            html += createField('Media Type / Source', 'media-type', 3);
+            html += createField('Data Backed Up', 'backed_up', 2);
+            html += '</div>';
+
+            // --- SANITIZATION DETAILS ---
+            html += '<div class="cert-section-header">SANITIZATION DETAILS</div>';
+            html += '<div class="cert-row">';
+            html += createField('Method Type', 'method_type', 1);
+            html += createField('Method Used', 'method_used', 2);
+            html += createField('Method Details', 'method-details', 2);
+            html += '</div>';
+            html += '<div class="cert-row">';
+            html += createField('Tool Used (w/ version)', 'tool-used', 2);
+            html += createField('Verification Method', 'verification', 1);
+            html += createField('Post Sanitization Class.', 'post-sanitization', 2);
+            html += '</div>';
+            html += '<div class="cert-row">';
+            html += createField('Notes', 'notes', 5);
+            html += '</div>';
+
+            // --- MEDIA DESTINATION ---
+            html += '<div class="cert-section-header">MEDIA DESTINATION</div>';
+            html += '<div class="cert-row">';
+            html += createField('Destination', 'destination', 2);
+            html += createField('Details', 'details', 3);
+            html += '</div>';
+
+            // --- SIGNATURE (Sanitizer) ---
+            html += '<div class="cert-section-header">SIGNATURE (Sanitizer)</div>';
+            html += '<div class="cert-row signature-row">';
+            html += createSignatureField('Signature', 'signature', 'date-sanitization');
+            html += '</div>';
+            
+            // --- VALIDATION ---
+            html += '<div class="cert-section-header">VALIDATION</div>';
+            html += '<div class="cert-row">';
+            html += createField('Name', 'validation-name', 3);
+            html += createField('Title', 'validation-title', 2);
+            html += '</div>';
+            html += '<div class="cert-row">';
+            html += createField('Organization', 'validation-org', 2);
+            html += createField('Phone', 'validation-phone', 3);
+            html += '</div>';
+            html += '<div class="cert-row signature-row">';
+            html += createSignatureField('Signature', 'validation-signature', 'validation-date');
+            html += '</div>';
+
+
+            container.innerHTML = html;
+        }
+
+        // --- EVENT HANDLERS ---
+        document.getElementById('download-final-pdf').addEventListener('click', () => {
+            // This button performs the download action
+            alert('Simulating PDF generation and download from Preview Page.');
+            // Add your PDF generation/download logic here (e.g., using jsPDF or a backend call)
+        });
+
+        document.getElementById('back-to-summary-btn').addEventListener('click', () => {
+            // Navigate back to the Summary page
+            window.location.href = 'wipe-summary.html';
+        });
+
+        // Run functions on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCertificateDetails();
+            // initializeCharts is removed
+        });
+    </script>
+</body>
+</html>

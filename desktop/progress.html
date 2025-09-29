@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GenixWipe - Live Progress</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* --- Progress Page Specific Styles (Applied to card-panel) --- */
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            width: 90%;
+            max-width: 900px; /* Wider card to fit the log and details */
+        }
+
+        /* --- Circular Progress Bar (Modern Look) --- */
+        .progress-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Conic gradient for the dynamic progress fill - starts at 0% */
+            background: conic-gradient(#0056b3 0%, #0056b3 0%, #e0e0e0 0%);
+            transition: background 0.3s;
+            box-shadow: 0 4px 20px rgba(0, 86, 179, 0.2);
+            margin-bottom: 30px;
+        }
+        .progress-inner-circle {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .progress-percent {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #0056b3;
+            margin-bottom: 5px;
+        }
+        .progress-label {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .progress-status {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #007bff;
+            margin-top: 10px;
+        }
+
+        /* --- Activity Log & Details Layout --- */
+        .log-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .activity-log-box {
+            grid-column: 1 / -1; /* Full width for the log */
+            height: 200px;
+            background-color: #333333;
+            color: #00ff41; /* Green text for console feel */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-y: scroll;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+            white-space: pre; /* Essential for pre-formatted log text */
+        }
+        .detail-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            border: 1px solid #eee;
+        }
+        .detail-card strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #003366;
+            font-size: 1.1rem;
+        }
+        
+        /* New element for the final completion message before redirecting */
+        #completion-message {
+            margin-top: 20px;
+            color: #28a745;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: none; /* Hidden until 100% */
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <h1>GenixWipe: Live Data Erasure</h1>
+    </header>
+
+    <main class="app-main-content">
+        <div class="card-panel progress-container">
+
+            <div class="progress-circle" id="progress-circle">
+                <div class="progress-inner-circle">
+                    <div class="progress-percent" id="progress-percent">0%</div>
+                    <div class="progress-label">Completion</div>
+                    <div class="progress-status" id="wipe-status">Initializing...</div>
+                </div>
+            </div>
+            
+            <div id="completion-message">Wipe Successful! Generating Summary...</div>
+
+            <div class="log-details-grid">
+                
+                <div class="detail-card">
+                    <strong>Drive Selected</strong>
+                    <span id="drive-info">Dummy Drive (SSD) - Serial: 1A2B3C4D</span>
+                </div>
+                
+                <div class="detail-card">
+                    <strong>Security Settings</strong>
+                    <span id="security-info">DoD 5220.22-M - 3 Passes</span>
+                </div>
+
+                <div class="activity-log-box">
+                    <pre id="activity-log">
+> SecureWipe v2.1.0 started.
+> Verifying media identity... OK.
+> Checking security level: DoD 5220.22-M (3 Passes).
+> Commencing Pass 1 of 3: Writing 0x00...
+                    </pre>
+                </div>
+            </div>
+            
+            <div class="action-buttons-container" style="display: none;"></div>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 GenixWipe. Always verify critical data erasure.</p>
+    </footer>
+    
+    <script>
+    // --- JAVASCRIPT PROGRESS SIMULATION LOGIC ---
+    const progressCircle = document.getElementById('progress-circle');
+    const progressPercent = document.getElementById('progress-percent');
+    const wipeStatus = document.getElementById('wipe-status');
+    const activityLog = document.getElementById('activity-log');
+    const completionMessage = document.getElementById('completion-message'); // New element reference
+    
+    // Note: previewBtn and downloadBtn are no longer needed for this page's logic
+
+    let currentProgress = 0;
+    let wipeInterval;
+    let isWiping = true; 
+    const CERTIFICATE_ID = 'XA1B2C3D4E';
+
+    const logMessages = [
+        "Commencing Pass 1 of 3: Writing 0xFF...",
+        "Block 1024/4096 complete. Speed: 120MB/s.",
+        "Pass 1 complete. Verification started...",
+        "Verification of Pass 1 complete. No residual data found.",
+        "Commencing Pass 2 of 3: Writing Random Data...",
+        "Block 3000/4096 complete. Speed: 98MB/s.",
+        "Pass 2 complete. Verification started...",
+        "Verification of Pass 2 complete. No residual data found.",
+        "Commencing Pass 3 of 3: Writing 0xAA...",
+        "Wiping process 90% complete. Finalizing security checks.",
+        "Wiping process 98% complete. Generating Certificate ID."
+    ];
+    let logIndex = 0; 
+
+    function updateProgress(percent) {
+        currentProgress = percent;
+        progressPercent.textContent = `${percent}%`;
+        progressCircle.style.background = `conic-gradient(#0056b3 ${percent}%, #e0e0e0 ${percent}%)`;
+        
+        const logMilestone = Math.floor((percent / 100) * logMessages.length);
+        
+        while (logIndex < logMilestone && logIndex < logMessages.length) {
+            activityLog.innerHTML += `\n> ${logMessages[logIndex]}`;
+            activityLog.scrollTop = activityLog.scrollHeight;
+            logIndex++;
+        }
+
+        if (percent === 100) {
+            wipeStatus.textContent = "Wipe Complete!";
+            
+            // --- CRITICAL CHANGE: Redirect to the Summary Page ---
+            
+            // 1. Finalize log and UI
+            activityLog.innerHTML += "\n> Final Pass complete. Full Verification Success.";
+            activityLog.innerHTML += `\n> **Secure Wipe Operation Successful!** Certificate ID: ${CERTIFICATE_ID}`;
+            activityLog.scrollTop = activityLog.scrollHeight;
+            
+            // 2. Show completion message
+            completionMessage.style.display = 'block';
+            
+            // 3. Stop simulation and redirect
+            clearInterval(wipeInterval); 
+            isWiping = false;
+            
+            // Redirect to the new summary page after a short delay
+            setTimeout(() => {
+                window.location.href = 'wipe-summary.html'; 
+            }, 2500); // 2.5 second delay to let the user see "Wipe Successful!"
+        }
+    }
+
+    function simulateWipe() {
+        let p = 0;
+        wipeInterval = setInterval(() => {
+            p += Math.floor(Math.random() * 5) + 1; 
+            if (p >= 100) {
+                p = 100;
+            }
+            updateProgress(p);
+            
+            if (p === 100) {
+                 clearInterval(wipeInterval);
+            }
+        }, 600);
+    }
+    
+    // Start the simulation when the page loads
+    document.addEventListener('DOMContentLoaded', simulateWipe);
+</script>
+</body>
+</html>

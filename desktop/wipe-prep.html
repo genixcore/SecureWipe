@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GenixWipe - Select Media</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .prep-container {
+            max-width: 600px;
+            width: 90%;
+            padding: 40px;
+        }
+        .drive-list {
+            margin: 20px 0 40px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .drive-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .drive-item:last-child {
+            border-bottom: none;
+        }
+        .drive-item:hover {
+            background-color: #f0f8ff; /* Light hover effect */
+        }
+        .drive-item.selected {
+            background-color: #e6f0ff; /* Light blue for selection */
+            border-left: 5px solid #0056b3;
+            font-weight: 600;
+        }
+        .drive-details {
+            text-align: left;
+        }
+        .drive-details strong {
+            display: block;
+            color: #003366;
+            font-size: 1.1rem;
+        }
+        .drive-details span {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .radio-icon {
+            color: #0056b3;
+            font-size: 1.5rem;
+        }
+        
+        /* Ensure the start button is below the list */
+        #start-wipe-btn {
+            width: 100%;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body class="splash-layout">
+    <header class="app-header">
+        <h1>Select Media for Secure Wipe</h1>
+    </header>
+
+    <main class="app-main-content">
+        <div class="card-panel prep-container">
+            <h2>Connected Media Devices</h2>
+            <p style="color: #dc3545; font-weight: 500;">Warning: Selecting a device will initiate irreversible data erasure.</p>
+            
+            <div class="drive-list" id="drive-list">
+                <div class="drive-item selected" data-serial="HDD1A2B3C4" data-type="HDD">
+                    <div class="drive-details">
+                        <strong>HDD External Drive</strong>
+                        <span>Serial: HDD1A2B3C4 | Size: 1TB | Method: DoD 3-Pass</span>
+                    </div>
+                    <div class="radio-icon">✔</div>
+                </div>
+                
+                <div class="drive-item" data-serial="SSD9X8Y7Z6" data-type="SSD">
+                    <div class="drive-details">
+                        <strong>SSD Internal Storage</strong>
+                        <span>Serial: SSD9X8Y7Z6 | Size: 512GB | Method: Crypto Erase</span>
+                    </div>
+                    <div class="radio-icon" style="opacity: 0;">✔</div>
+                </div>
+
+                <div class="drive-item" data-serial="USB5D6E7F8" data-type="USB">
+                    <div class="drive-details">
+                        <strong>USB Flash Drive</strong>
+                        <span>Serial: USB5D6E7F8 | Size: 32GB | Method: Clear/Single Pass</span>
+                    </div>
+                    <div class="radio-icon" style="opacity: 0;">✔</div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-primary" id="start-wipe-btn">
+                Start Secure Wipe
+            </button>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 GenixWipe. Proceed with caution.</p>
+    </footer>
+    
+    <script>
+        const driveList = document.getElementById('drive-list');
+        const startBtn = document.getElementById('start-wipe-btn');
+        let selectedDrive = document.querySelector('.drive-item.selected');
+
+        driveList.addEventListener('click', (event) => {
+            let item = event.target.closest('.drive-item');
+            if (item && item !== selectedDrive) {
+                // Deselect previous
+                if (selectedDrive) {
+                    selectedDrive.classList.remove('selected');
+                    selectedDrive.querySelector('.radio-icon').style.opacity = 0;
+                }
+                
+                // Select new item
+                item.classList.add('selected');
+                item.querySelector('.radio-icon').style.opacity = 1;
+                selectedDrive = item;
+            }
+        });
+
+        startBtn.addEventListener('click', () => {
+            if (selectedDrive) {
+                // In a real application, you would pass selectedDrive.dataset.serial 
+                // to the progress page, but for now, we just navigate.
+                alert(`Starting wipe on: ${selectedDrive.querySelector('strong').textContent}`);
+                window.location.href = 'progress.html'; 
+            } else {
+                alert('Please select a media device to begin the wipe.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureDataWiping - Military-Grade Data Erasure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #FFFFFF;
+            --secondary-color: #F1F5F9;
+            --accent-color: #3A86FF;
+            --dark-bg: #0D1B2A;
+            --dark-bg-secondary: #1B263B;
+            --text-primary: #0D1B2A;
+            --text-secondary: #415A77;
+            --light-text: #F8F9FA;
+            --success-color: #2ECC71;
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border-radius: 8px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--secondary-color); color: var(--text-secondary); line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        
+        /* --- Header & Navigation --- */
+        .main-header {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); text-decoration: none; }
+        .logo svg { vertical-align: middle; margin-right: 0.5rem; color: var(--accent-color); }
+        .nav-links { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .nav-links a { color: var(--text-primary); text-decoration: none; font-weight: 500; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px; }
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a svg { width: 20px; height: 20px; transition: color 0.3s ease; }
+        .nav-links a:hover svg { color: var(--accent-color); }
+        .login-button a { background-color: var(--accent-color); padding: 0.5rem 1.2rem; border-radius: var(--border-radius); color: var(--primary-color); transition: background-color 0.3s; }
+        .login-button a:hover { background-color: #2a75ee; }
+        .mobile-nav-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 2rem; cursor: pointer; }
+
+        /* --- Hero Section --- */
+        .hero { padding: 8rem 0; text-align: left; background-color: var(--dark-bg); color:var(--light-text); }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero p { font-size: 1.2rem; max-width: 550px; margin-bottom: 2.5rem; }
+        .hero-buttons { display: flex; gap: 1rem; }
+        .btn { padding: 1rem 2rem; text-decoration: none; border-radius: var(--border-radius); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s; }
+        .btn-primary { background-color: var(--accent-color); color: var(--primary-color); }
+        .btn-primary:hover { background-color: #2a75ee; transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .btn-secondary { background-color: transparent; color: var(--light-text); border: 2px solid var(--dark-bg-secondary); }
+        .btn-secondary:hover { background-color: var(--dark-bg-secondary); }
+        .hero-meta { display: flex; gap: 2rem; margin-top: 3rem; }
+        .meta-item { display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+        .meta-item svg { color: var(--accent-color); }
+        .hero-visual { background-color: var(--dark-bg-secondary); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--shadow-lg); }
+        .visual-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .visual-title { font-weight: 600; color: var(--success-color); }
+        .visual-dots { display: flex; gap: 0.5rem; }
+        .visual-dots span { width: 12px; height: 12px; background-color: var(--dark-bg); border-radius: 50%; }
+        .visual-content { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .visual-item { background-color: var(--dark-bg); padding: 1rem; border-radius: var(--border-radius); }
+        .visual-item-label { font-size: 0.9rem; color: var(--light-text); opacity: 0.7; }
+        .visual-item-value { font-weight: 600; }
+        .visual-item-value.passed { color: var(--success-color); }
+        .visual-footer { margin-top: 1rem; text-align: center; }
+        .visual-footer svg { width: 100%; height: 60px; color: var(--accent-color); }
+
+        /* --- Sections General Styling --- */
+        .section { padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary); }
+        .section-header p { max-width: 700px; margin: 0 auto; font-size: 1.1rem; color: var(--text-secondary); }
+        .section.bg-white { background-color: var(--primary-color); }
+        
+        /* --- Why Choose Us Section --- */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .feature-card { background-color: var(--primary-color); padding: 2.5rem; border-radius: var(--border-radius); text-align: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: var(--shadow-md); }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+        .feature-icon { background-color: var(--secondary-color); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; }
+        .feature-icon svg { width: 32px; height: 32px; color: var(--accent-color); }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .feature-card p { color: var(--text-secondary); }
+
+        /* --- Services Section --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .service-card { background-color: var(--primary-color); border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-md); }
+        .service-image { height: 200px; background-color: var(--secondary-color); display: flex; align-items: center; justify-content: center; }
+        .service-image svg { width: 60px; height: 60px; color: var(--accent-color); }
+        .service-content { padding: 2rem; }
+        .service-content h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-primary); }
+        .service-content ul { list-style: none; }
+        .service-content li { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .service-content li svg { color: var(--success-color); }
+
+        /* --- About Section --- */
+        #about { background-color: var(--primary-color); }
+        .about-grid h2, .about-grid h4 { color: var(--text-primary); }
+        .about-grid p, .about-grid li div { color: var(--text-secondary); }
+        .stat-card { color: var(--text-secondary); }
+
+        /* --- Testimonials Section --- */
+        .testimonial-card { background-color: var(--primary-color); box-shadow: var(--shadow-md); }
+        .testimonial-text { color: var(--text-secondary); }
+        .testimonial-author .author-name { color: var(--text-primary); }
+        .testimonial-author .author-company { color: var(--text-secondary); }
+
+        /* --- Contact Section --- */
+        #contact { background-color: var(--primary-color); }
+
+        /* --- Footer --- */
+        .main-footer { background-color: var(--dark-bg); color: var(--light-text); }
+        .footer-about p, .footer-links ul a { color: var(--light-text); }
+        .footer-links h4 { color: var(--primary-color); }
+        .footer-bottom { border-top: 1px solid var(--dark-bg-secondary); }
+        .social-links a { color: var(--light-text); }
+
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--primary-color); flex-direction: column; padding: 2rem; gap: 1.5rem; border-bottom: 1px solid #e5e7eb; box-shadow: var(--shadow-md); }
+            .nav-links.active { display: flex; }
+            .mobile-nav-toggle { display: block; }
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero p { margin: 0 auto 2.5rem auto; }
+            .hero-buttons { justify-content: center; }
+            .hero-meta { justify-content: center; flex-wrap: wrap; }
+            .about-grid { grid-template-columns: 1fr !important; }
+            .contact-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .section-header h2 { font-size: 2.2rem; }
+            .footer-grid { grid-template-columns: 1fr !important; }
+            .footer-bottom { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header" id="home">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    SecureDataWiping
+                </a>
+                
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            Home</a></li>
+                        <li><a href="#features">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            Features</a></li>
+                        <li><a href="#services">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                            Services</a></li>
+                        <li><a href="index1.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            Cart</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li class="login-button"><a href="login.html">Login</a></li>
+                    </ul>
+                </nav>
+                
+                <button class="mobile-nav-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+            
+        </div>
+    </header>
+    
+    
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                
+                <div class="hero-text">
+                    
+                    <h1>
+                        Secure Data
+                        Wiping Solutions
+                    </h1>
+
+                    
+                    <p>
+                        Permanently erase sensitive data with military-grade security standards. 
+                        Protect your privacy and ensure compliance with our certified data wiping technology.
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        
+                        <a href="#" class="btn btn-primary">
+                            Start Secure Wiping
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
+                    </div>
+                    
+                    <div class="hero-meta">
+                        
+                        <div class="meta-item">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            DOD 5220.22-M Compliant
+                        </div>
+
+                        
+                        <div class="meta-item">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            NIST 800-88 Standard
+                        </div>
+
+                        
+                        <div class="meta-item">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            ISO 27001 Certified
+                        </div>
+
+                    </div>
+
+                </div>
+                
+
+                <div class="hero-visual">
+                    
+                    <div class="visual-header">
+                        
+                        <span class="visual-title">Verification Complete</span>
+
+                        Data permanently wiped and verified
+                        
+                        <div class="visual-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="visual-content">
+                        
+                        <div class="visual-item">
+                            
+                            <div class="visual-item-label">
+                                Files Processed:
+                            </div>
+                            <div class="visual-item-value">
+                                847,325
+                            </div>
+                        </div>
+
+                        
+                        <div class="visual-item">
+                            
+                            <div class="visual-item-label">
+                                Security Level:
+                            </div>
+                            <div class="visual-item-value">
+                                Military Grade
+                            </div>
+                        </div>
+
+                        
+                        <div class="visual-item">
+                            
+                            <div class="visual-item-label">
+                                Compliance:
+                            </div>
+                            <div class="visual-item-value">
+                                DOD 5220.22-M
+                            </div>
+                        </div>
+
+                        
+                        <div class="visual-item">
+                            
+                            <div class="visual-item-label">
+                                Verification:
+                            </div>
+                            <div class="visual-item-value passed">
+                                ✓ Passed
+                            </div>
+                        </div>
+
+                    </div>
+
+                    
+                    <div class="visual-footer">
+                        
+                        <svg viewBox="0 0 100 20">
+                            
+                            <polyline points="0,15 10,15 15,5 25,18 35,10 45,15 55,8 65,16 75,10 85,14 90,10 100,12" fill="none" stroke="currentColor" stroke-width="2"></polyline>
+                        </svg>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <section class="section bg-white" id="features">
+        <div class="container">
+            
+            <div class="section-header">
+                
+                <h2>Why Choose Our Data Wiping Solution?</h2>
+
+                
+                <p>
+                    Our comprehensive data wiping solution combines cutting-edge technology with industry-leading 
+                    security standards to ensure your sensitive information is permanently destroyed.
+                </p>
+
+            </div>
+            
+            <div class="features-grid">
+                
+                <div class="feature-card">
+                    
+                    <div class="feature-icon">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+
+                    <h3>Military-Grade Security</h3>
+
+                    Advanced algorithms ensure complete data destruction with multiple overwrite passes
+
+                </div>
+                
+                <div class="feature-card">
+                    
+                    <div class="feature-icon">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    </div>
+
+                    <h3>Lightning Fast</h3>
+
+                    Optimized performance for quick and efficient data wiping across all storage types
+
+                </div>
+                
+                <div class="feature-card">
+                    
+                    <div class="feature-icon">
+                        
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+
+                    <h3>Verification Reports</h3>
+
+                    Detailed certificates proving successful data erasure for compliance requirements
+
+                </div>
+                
+                <div class="feature-card">
+                    
+                    <div class="feature-icon">
+                        
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+
+                    <h3>Deep Scan Technology</h3>
+
+                    Identifies and removes all traces of data including hidden and system files
+
+                </div>
+                
+                <div class="feature-card">
+                    
+                    <div class="feature-icon">
+                        
+                        
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path><path d="M10 11V7"></path></svg>
+                    </div>
+
+                    <h3>Secure Process</h3>
+
+                    End-to-end encrypted wiping process with real-time monitoring and logging
+
+                </div>
+                
+                <div class="feature-card">
+                    
+                    <div class="feature-icon">
+                        
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+
+                    <h3>Industry Certified</h3>
+
+                    Compliant with international standards including NIST, DOD, and ISO requirements
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <section class="section" id="services">
+        <div class="container">
+            
+            <div class="section-header">
+                
+                <h2>Comprehensive Wiping Services</h2>
+
+                
+                <p>
+                    From individual devices to enterprise-scale deployments, we provide secure data 
+                    wiping solutions for every need and industry requirement.
+                </p>
+
+            </div>
+            
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    
+                    <div class="service-image">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a10 10 0 00-9.95 9.5h0a10 10 0 0019.9 0h0A10 10 0 0012 2z"></path>
+                        </svg>
+                    </div>
+                    
+                    <div class="service-content">
+                        
+                        <h3>Hard Drive Wiping</h3>
+
+                        Complete erasure of HDDs and SSDs with multiple security standards
+                        
+                        <ul>
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                DOD 5220.22-M
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                NIST 800-88
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Gutmann Method
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Custom Patterns
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+                
+                <div class="service-card">
+                    
+                    <div class="service-image">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    </div>
+                    
+                    <div class="service-content">
+                        
+                        <h3>Mobile Device Wiping</h3>
+
+                        Secure erasure for smartphones, tablets, and mobile storage
+                        
+                        <ul>
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                iOS Devices
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Android Devices
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Factory Reset+
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Remote Wiping
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+                
+                <div class="service-card">
+                    
+                    <div class="service-image">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    
+                    <div class="service-content">
+                        
+                        <h3>Enterprise Solutions</h3>
+
+                        Bulk wiping solutions for data centers and enterprise environments
+                        
+                        <ul>
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Batch Processing
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Network Wiping
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Compliance Reports
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                API Integration
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+                
+                <div class="service-card">
+                    
+                    <div class="service-image">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    
+                    <div class="service-content">
+                        
+                        <h3>Computer Wiping</h3>
+
+                        Complete system wiping for desktops and laptops
+                        
+                        <ul>
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Boot-level Wiping
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Multiple OS Support
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                BIOS/UEFI Clean
+                            </li>
+
+                            
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Certificate Generation
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <section class="section bg-white" id="about">
+        <div class="container">
+            
+            <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                
+                <div class="about-text">
+                    
+                    <h2 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 1.5rem;">Trusted by Industry Leaders Worldwide</h2>
+
+                    
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem; opacity: 0.8;">
+                        With over a decade of experience in data security, SecureDataWiping has become 
+                        the go-to solution for organizations that demand the highest levels of data protection 
+                        and compliance.
+                    </p>
+                    
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 1.5rem;">
+                        
+                        <li style="display: flex; align-items: flex-start; gap: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-color); flex-shrink: 0; margin-top: 5px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <div>
+                                <h4>Military-Grade Standards</h4>
+
+                                Our solutions meet and exceed the most stringent government and military data wiping requirements.
+
+                            </div>
+                        </li>
+                        
+                        <li style="display: flex; align-items: flex-start; gap: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-color); flex-shrink: 0; margin-top: 5px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                <h4>Regulatory Compliance</h4>
+
+                                Stay compliant with GDPR, HIPAA, SOX, and other international data protection regulations.
+
+                            </div>
+                        </li>
+                        
+                        <li style="display: flex; align-items: flex-start; gap: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-color); flex-shrink: 0; margin-top: 5px;"><path d="M12 22a10 10 0 100-20 10 10 0 000 20z"></path><path d="M12 18a6 6 0 100-12 6 6 0 000 12z"></path><path d="M12 14a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                                <h4>24/7 Expert Support</h4>
+
+                                Our certified data security experts are available around the clock to assist with your needs.
+
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </div>
+                
+                <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    
+                    <div class="stat-card" style="background-color: var(--secondary-color); padding: 2rem; border-radius: var(--border-radius); text-align: center; box-shadow: var(--shadow-md);">
+                        
+                        <div class="stat-icon" style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+
+                        <div class="stat-number" style="font-size: 2.5rem; font-weight: 800;">50,000+</div>
+
+                        Satisfied Clients
+
+                    </div>
+                    
+                    <div class="stat-card" style="background-color: var(--secondary-color); padding: 2rem; border-radius: var(--border-radius); text-align: center; box-shadow: var(--shadow-md);">
+                        
+                        <div class="stat-icon" style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+
+                        <div class="stat-number" style="font-size: 2.5rem; font-weight: 800;">99.9%</div>
+
+                        Success Rate
+
+                    </div>
+                    
+                    <div class="stat-card" style="background-color: var(--secondary-color); padding: 2rem; border-radius: var(--border-radius); text-align: center; box-shadow: var(--shadow-md);">
+                        
+                        <div class="stat-icon" style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0L12 2.69z"></path>
+                            </svg>
+                        </div>
+
+                        <div class="stat-number" style="font-size: 2.5rem; font-weight: 800;">15+</div>
+
+                        Industry Certifications
+
+                    </div>
+                    
+                    <div class="stat-card" style="background-color: var(--secondary-color); padding: 2rem; border-radius: var(--border-radius); text-align: center; box-shadow: var(--shadow-md);">
+                        
+                        <div class="stat-icon" style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 1rem;">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"></path>
+                            </svg>
+                        </div>
+
+                        <div class="stat-number" style="font-size: 2.5rem; font-weight: 800;">120+</div>
+
+                        Countries Served
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <section class="section">
+        <div class="container">
+            
+            <div class="section-header">
+                
+                <h2>What Our Clients Say</h2>
+
+                
+                <p>
+                    Don't just take our word for it. Here's what industry professionals say about 
+                    our secure data wiping solutions.
+                </p>
+
+            </div>
+            
+            <div class="testimonials-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                
+                <div class="testimonial-card" style="background-color: var(--primary-color); padding: 2rem; border-radius: var(--border-radius);">
+                    
+                    <div class="testimonial-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        
+                        <img src="https://i.pravatar.cc/60?img=1" alt="Sarah Johnson" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div class="rating" style="color: #FFC107; font-size: 1.2rem;">
+                            ★
+                            ★
+                            ★
+                            ★
+                            ★
+                        </div>
+                    </div>
+
+                    
+                    <p class="testimonial-text" style="margin-bottom: 1.5rem; font-style: italic;">
+                        "SecureDataWiping has been instrumental in helping us maintain GDPR compliance. Their verification reports give us complete confidence that our data is permanently destroyed."
+                    </p>
+
+                    
+                    <div class="testimonial-author">
+                        
+                        <div class="author-name" style="font-weight: 600;">Sarah Johnson</div>
+
+                        IT Security Director
+
+                        <div class="author-company" style="font-size: 0.9rem; opacity: 0.7;">TechCorp Industries</div>
+
+                    </div>
+
+                </div>
+                
+                <div class="testimonial-card" style="background-color: var(--primary-color); padding: 2rem; border-radius: var(--border-radius);">
+                    
+                    <div class="testimonial-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        
+                        <img src="https://i.pravatar.cc/60?img=2" alt="Michael Chen" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div class="rating" style="color: #FFC107; font-size: 1.2rem;">
+                            ★
+                            ★
+                            ★
+                            ★
+                            ★
+                        </div>
+                    </div>
+
+                    
+                    <p class="testimonial-text" style="margin-bottom: 1.5rem; font-style: italic;">
+                        "The military-grade security standards and detailed compliance reports make SecureDataWiping our trusted partner for all data destruction needs."
+                    </p>
+
+                    
+                    <div class="testimonial-author">
+                        
+                        <div class="author-name" style="font-weight: 600;">Michael Chen</div>
+
+                        Data Privacy Officer
+
+                        <div class="author-company" style="font-size: 0.9rem; opacity: 0.7;">Global Finance Ltd</div>
+
+                    </div>
+
+                </div>
+                
+                <div class="testimonial-card" style="background-color: var(--primary-color); padding: 2rem; border-radius: var(--border-radius);">
+                    
+                    <div class="testimonial-header" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        
+                        <img src="https://i.pravatar.cc/60?img=3" alt="Emma Rodriguez" style="width: 60px; height: 60px; border-radius: 50%;">
+                        <div class="rating" style="color: #FFC107; font-size: 1.2rem;">
+                            ★
+                            ★
+                            ★
+                            ★
+                            ★
+                        </div>
+                    </div>
+
+                    
+                    <p class="testimonial-text" style="margin-bottom: 1.5rem; font-style: italic;">
+                        "Outstanding service and support. The verification process is thorough and the certificates are accepted by all our auditors without question."
+                    </p>
+
+                    
+                    <div class="testimonial-author">
+                        
+                        <div class="author-name" style="font-weight: 600;">Emma Rodriguez</div>
+
+                        Systems Administrator
+
+                        <div class="author-company" style="font-size: 0.9rem; opacity: 0.7;">Healthcare Solutions Inc</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <section class="section bg-white" id="contact">
+        <div class="container">
+            
+            <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                
+                <div class="contact-info">
+                    
+                    <h2 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 1.5rem;">Ready to Secure Your Data?</h2>
+
+                    
+                    <p style="margin-bottom: 2.5rem; font-size: 1.1rem; opacity: 0.8;">
+                        Get started with our secure data wiping solution today. Our experts are ready 
+                        to help you implement the perfect data destruction strategy for your organization.
+                    </p>
+                    
+                    <ul class="contact-details" style="list-style: none; display: flex; flex-direction: column; gap: 1.5rem;">
+                        
+                        <li style="display: flex; align-items: center; gap: 1rem;">
+                            
+                            <div class="contact-icon" style="background-color: var(--secondary-color); border: 1px solid #e0e1dd; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color);">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path></svg>
+                            </div>
+
+                            
+                            <div>
+                                <h4>Phone Support</h4>
+
+                                +1 (555) 123-WIPE
+
+                            </div>
+
+                        </li>
+                        
+                        <li style="display: flex; align-items: center; gap: 1rem;">
+                            
+                            <div class="contact-icon" style="background-color: var(--secondary-color); border: 1px solid #e0e1dd; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color);">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </div>
+
+                            
+                            <div>
+                                <h4>Email Support</h4>
+
+                                support@securedatawiping.com
+
+                            </div>
+
+                        </li>
+                        
+                        <li style="display: flex; align-items: center; gap: 1rem;">
+                            
+                            <div class="contact-icon" style="background-color: var(--secondary-color); border: 1px solid #e0e1dd; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color);">
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            </div>
+
+                            
+                            <div>
+                                <h4>Headquarters</h4>
+
+                                123 Security Blvd, Tech City, TC 12345
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+                
+                <form class="contact-form" style="background-color: var(--primary-color); padding: 3rem; border-radius: var(--border-radius); box-shadow: var(--shadow-lg);">
+                    
+                    <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 2rem;">Get Started Today</h3>
+                    
+                    <div class="form-row" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        
+                        <div class="form-group" style="flex: 1;">
+                            <label for="first-name" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">First Name</label>
+                            <input type="text" id="first-name" style="width: 100%; padding: 0.8rem; border: 1px solid #e0e1dd; border-radius: var(--border-radius);">
+                        </div>
+
+                        
+                        <div class="form-group" style="flex: 1;">
+                            <label for="last-name" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Last Name</label>
+                            <input type="text" id="last-name" style="width: 100%; padding: 0.8rem; border: 1px solid #e0e1dd; border-radius: var(--border-radius);">
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        
+                        <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email Address</label>
+                        <input type="email" id="email" style="width: 100%; padding: 0.8rem; border: 1px solid #e0e1dd; border-radius: var(--border-radius);">
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        
+                        <label for="company" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Company</label>
+                        <input type="text" id="company" style="width: 100%; padding: 0.8rem; border: 1px solid #e0e1dd; border-radius: var(--border-radius);">
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        
+                        <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
+                        <textarea id="message" rows="5" style="width: 100%; padding: 0.8rem; border: 1px solid #e0e1dd; border-radius: var(--border-radius); resize: vertical;"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Send Message
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <footer class="main-footer">
+        <div class="container">
+            
+            <div class="footer-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; padding-bottom: 4rem;">
+                
+                <div class="footer-about">
+                    
+                    <a href="#" class="logo" style="margin-bottom: 1.5rem; display: inline-block;">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        SecureDataWiping
+                    </a>
+
+                    
+                    <p style="max-width: 400px; margin-bottom: 1.5rem; opacity: 0.8;">
+                        Leading provider of secure data wiping solutions with military-grade security 
+                        standards. Protecting your sensitive information with certified, compliant data destruction.
+                    </p>
+
+                    
+                    <div class="social-links" style="display: flex; gap: 1.5rem;">
+                        
+                        <a href="#" style="color: var(--text-color);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path></svg></a>
+                        
+                        <a href="#" style="color: var(--text-color);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path></svg></a>
+                        
+                        <a href="#" style="color: var(--text-color);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                        
+                        <a href="#" style="color: var(--text-color);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                    </div>
+
+                </div>
+                
+                <div class="footer-links">
+                    
+                    <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem;">Services</h4>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;">
+                            
+                            <li><a href="#services" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Hard Drive Wiping</a></li>
+
+                            <li><a href="#services" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Mobile Device Wiping</a></li>
+
+                            <li><a href="#services" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Enterprise Solutions</a></li>
+
+                            <li><a href="#" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Compliance Reports</a></li>
+
+                            <li><a href="#" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">API Integration</a></li>
+
+                        </ul>
+
+                    </div>
+                    
+                    <div class="footer-links">
+                        
+                        <h4 style="font-size: 1.2rem; margin-bottom: 1.5rem;">Company</h4>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;">
+                            
+                            <li><a href="#about" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">About Us</a></li>
+
+                            <li><a href="#" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Certifications</a></li>
+
+                            <li><a href="#" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Privacy Policy</a></li>
+
+                            <li><a href="#" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Terms of Service</a></li>
+
+                            <li><a href="#contact" style="color: var(--text-color); text-decoration: none; opacity: 0.8; transition: opacity 0.3s;">Contact Support</a></li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+            
+            <div class="footer-bottom" style="border-top: 1px solid var(--secondary-color); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; opacity: 0.7;">
+                
+                <p>
+                    © 2025 SecureDataWiping. All rights reserved.
+                </p>
+
+                
+                <p>
+                    DOD 5220.22-M Compliant
+                    NIST 800-88 Certified
+                    ISO 27001 Verified
+                </p>
+
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertiWipe Store - Secure Storage Marketplace</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Main Stylesheet -->
+    <style>
+        :root {
+            --dark-blue-900: #0D1B2A;
+            --dark-blue-800: #1B263B;
+            --dark-blue-700: #415A77;
+            --mid-blue-500: #3A86FF;
+            --light-gray-200: #E0E1DD;
+            --light-gray-100: #F1F5F9;
+            --white: #FFFFFF;
+            --success-green: #2ECC71;
+            --text-dark: #0D1B2A;
+            --text-light: #F8F9FA;
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        /* 1. Global Resets & Body Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* 2. Header & Navigation */
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            background-color: var(--white);
+        }
+
+        .top-bar {
+            background-color: var(--dark-blue-900);
+            color: var(--light-gray-200);
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+        }
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar-links a {
+            color: var(--light-gray-200);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.2s ease;
+        }
+        .top-bar-links a:hover {
+            color: var(--white);
+        }
+
+        .header-main {
+            padding: 1.5rem 0;
+        }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--dark-blue-900);
+            text-decoration: none;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo span {
+            color: var(--mid-blue-500);
+        }
+        .logo .verified-check {
+            color: var(--success-green);
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            display: flex;
+            max-width: 700px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--light-gray-200);
+            border-right: none;
+            border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+            background-color: var(--light-gray-100);
+            font-size: 1rem;
+            outline: none;
+            color: var(--text-dark);
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .search-bar input::placeholder {
+            color: var(--dark-blue-700);
+        }
+        .search-bar input:focus {
+            border-color: var(--mid-blue-500);
+            background-color: var(--white);
+        }
+        .search-bar button {
+            padding: 0 1.5rem;
+            border: none;
+            background-color: var(--dark-blue-800);
+            color: var(--white);
+            border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-blue-900);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .header-actions a {
+            color: var(--dark-blue-700);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem;
+            border-radius: var(--border-radius-md);
+            transition: color 0.2s ease, background-color 0.2s ease;
+            position: relative;
+        }
+        .header-actions a:hover {
+            color: var(--dark-blue-900);
+            background-color: var(--light-gray-100);
+        }
+        .cart-icon-wrapper {
+            cursor: pointer;
+        }
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background-color: var(--mid-blue-500);
+            color: var(--white);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+        .cart-count.active {
+            transform: scale(1);
+        }
+
+        .navbar {
+            background-color: var(--dark-blue-800);
+            position: relative; 
+        }
+        .nav-links {
+            display: flex;
+            justify-content: flex-start;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .nav-links li {
+            position: relative;
+        }
+        .nav-links a.nav-main {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+        .nav-links a.nav-main:hover {
+            color: var(--mid-blue-500);
+        }
+        .nav-links a.nav-main::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--mid-blue-500);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+        .nav-links a.nav-main:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .dropdown {
+            position: static; 
+        }
+        .dropdown-content {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            background-color: var(--white);
+            box-shadow: var(--shadow-lg);
+            z-index: 999;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            padding: 2.5rem 0;
+            border-top: 1px solid var(--light-gray-200);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+        }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .dropdown-column h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-blue-900);
+            margin-bottom: 1rem;
+        }
+        .dropdown-column ul { list-style: none; }
+        .dropdown-column ul a {
+            color: var(--dark-blue-700);
+            padding: 0.5rem 0;
+            display: block;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+        .dropdown-column ul a:hover {
+            color: var(--mid-blue-500);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(13, 27, 42, 0.85), rgba(13, 27, 42, 0.85)), url('https://images.unsplash.com/photo-1544890225-2f3faec4bae6?q=80&w=1770&auto=format&fit=crop') no-repeat center center/cover;
+            padding: 8rem 0; text-align: center; color: var(--white);
+        }
+        .hero h1 { font-size: 4rem; margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -1.5px; background: linear-gradient(90deg, var(--white), var(--mid-blue-500)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2.5rem; max-width: 700px; margin-left: auto; margin-right: auto; color: var(--light-gray-200); }
+        .cta-button { display: inline-block; background-color: var(--mid-blue-500); color: var(--white); padding: 1.2rem 3rem; text-decoration: none; font-size: 1.1rem; font-weight: 600; border-radius: var(--border-radius-md); transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(58, 134, 255, 0.4); background-color: #2a75ee; }
+        
+        .why-us-section { background-color: var(--light-gray-100); padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: 3rem; font-weight: 800; color: var(--dark-blue-900); margin-bottom: 1rem; }
+        .section-header p { font-size: 1.15rem; color: var(--dark-blue-700); max-width: 600px; margin: 0 auto; }
+        .why-us-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; text-align: center; }
+        .why-us-item { background-color: var(--white); padding: 3rem 1.5rem; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--light-gray-200); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .why-us-item:hover { transform: translateY(-10px); box-shadow: var(--shadow-md); }
+        .why-us-item .icon-wrapper { background-color: var(--light-gray-100); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; transition: background-color 0.3s ease; }
+        .why-us-item:hover .icon-wrapper { background-color: var(--mid-blue-500); }
+        .why-us-item svg { color: var(--mid-blue-500); width: 40px; height: 40px; transition: color 0.3s ease; }
+        .why-us-item:hover svg { color: var(--white); }
+        .why-us-item h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--dark-blue-900); }
+        .why-us-item p { font-size: 1rem; color: var(--dark-blue-700); }
+        
+        .product-section { padding: 6rem 0; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+        .product-card { background-color: var(--white); border-radius: var(--border-radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--light-gray-200); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); border-color: var(--mid-blue-500); }
+        .product-image-container { width: 100%; padding-top: 75%; position: relative; background-color: var(--white); }
+        .product-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: 1.5rem; background-color: var(--white); }
+        .product-info { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-dark); text-decoration: none; line-height: 1.4; }
+        .product-title:hover { color: var(--mid-blue-500); }
+        .product-specs { font-size: 0.95rem; color: var(--dark-blue-700); margin-bottom: 1.25rem; }
+        .product-price-wrapper { margin-top: auto; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+        .product-price { font-size: 1.8rem; font-weight: 700; color: var(--dark-blue-900); }
+        .add-to-cart-btn { width: 100%; padding: 1rem; background-color: var(--mid-blue-500); color: var(--white); border: none; border-radius: var(--border-radius-md); font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease, transform 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .add-to-cart-btn:hover { background-color: var(--dark-blue-900); transform: scale(1.02); }
+
+        .how-it-works-section { background-color: var(--white); padding: 6rem 0; }
+        .newsletter-section { background-color: var(--dark-blue-800); color: var(--white); padding: 4rem 0; }
+        .newsletter-content { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .newsletter-content h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .newsletter-content p { font-size: 1.1rem; color: var(--light-gray-200); max-width: 500px; margin-bottom: 2rem; }
+        .newsletter-form { display: flex; gap: 0.5rem; max-width: 500px; width: 100%; }
+        .newsletter-form input { flex-grow: 1; padding: 1rem; border: 1px solid var(--dark-blue-700); border-radius: var(--border-radius-md); background-color: var(--dark-blue-900); color: var(--white); font-size: 1rem; }
+        .newsletter-form button { padding: 1rem 2rem; background-color: var(--mid-blue-500); color: var(--white); border: none; border-radius: var(--border-radius-md); font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
+        .newsletter-form button:hover { background-color: #2a75ee; }
+        
+        .main-footer { background-color: var(--dark-blue-900); color: var(--light-gray-200); padding: 5rem 0 2rem 0; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+        .footer-column h4 { font-size: 1.3rem; color: var(--white); margin-bottom: 1.25rem; font-weight: 700; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 0.75rem; }
+        .footer-column ul a { color: var(--light-gray-200); text-decoration: none; font-size: 0.95rem; transition: color 0.2s ease; }
+        .footer-column ul a:hover { color: var(--mid-blue-500); }
+        .footer-about p { margin-bottom: 1.5rem; max-width: 320px; font-size: 0.95rem; }
+        .social-links a { display: inline-block; margin-right: 1rem; color: var(--light-gray-200); transition: color 0.2s ease; }
+        .social-links a:hover { color: var(--mid-blue-500); }
+        .footer-bottom { border-top: 1px solid var(--dark-blue-700); padding-top: 2rem; text-align: center; font-size: 0.95rem; }
+        
+        /* Cart Overlay Styles */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 2000;
+            display: flex;
+            justify-content: flex-end;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .cart-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--white);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .cart-overlay.active .cart-container {
+            transform: translateX(0);
+        }
+        .cart-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--light-gray-200);
+        }
+        .cart-header h2 { font-size: 1.5rem; margin: 0; }
+        .close-cart-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .cart-body { flex-grow: 1; overflow-y: auto; padding: 1rem; }
+        .cart-item { display: grid; grid-template-columns: 80px 1fr auto; gap: 1rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--light-gray-200); }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item img { width: 80px; height: auto; border-radius: var(--border-radius-md); }
+        .cart-item-details h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .cart-item-details p { font-size: 0.85rem; color: var(--dark-blue-700); }
+        .cart-item-price { font-size: 1rem; font-weight: 600; }
+        .remove-item-btn { color: var(--mid-blue-500); background: none; border: none; font-size: 0.85rem; cursor: pointer; text-align: left; padding-top: 5px; }
+        .cart-footer { padding: 1.5rem; border-top: 1px solid var(--light-gray-200); }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; }
+        .checkout-btn { width: 100%; padding: 1rem; background-color: var(--mid-blue-500); color: var(--white); border: none; border-radius: var(--border-radius-md); font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease; }
+        .checkout-btn:hover { background-color: #2a75ee; }
+        #empty-cart-message { text-align: center; padding: 4rem 1rem; }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--dark-blue-900);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 992px) {
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .dropdown { position: relative; } 
+            .dropdown-content { position: absolute; width: auto; min-width: 300px; }
+            .dropdown-grid { grid-template-columns: 1fr; }
+            .nav-links { gap: 1rem; }
+        }
+        @media (max-width: 768px) {
+            .top-bar { display: none; }
+            .header-content { flex-wrap: wrap; justify-content: space-between; }
+            .search-bar { order: 3; width: 100%; max-width: 100%; margin-top: 1rem; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .hero p { font-size: 1.1rem; }
+            .section-header h2 { font-size: 2.4rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .cart-container { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="top-bar">
+            <div class="container">
+                <div class="top-bar-content">
+                    <span>Secure & Certified IT Asset Marketplace</span>
+                    <div class="top-bar-links">
+                        <a href="#">Sell Your Device</a>
+                        <a href="#">Track Order</a>
+                        <a href="#">Help Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <a href="index.html" class="logo">Certi<span>Wipe</span>
+                        <svg class="verified-check" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </a>
+                    <form class="search-bar">
+                        <input type="text" placeholder="Search for certified SSDs, HDDs, Pen Drives...">
+                        <button type="submit" aria-label="Search">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </form>
+                    <div class="header-actions">
+                        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Account</span></a>
+                        <a href="#" class="cart-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            <span>Cart</span>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-links">
+                    <li class="dropdown">
+                        <a href="#" class="nav-main">Shop All Categories</a>
+                        <div class="dropdown-content">
+                            <div class="dropdown-grid">
+                                <div class="dropdown-column">
+                                    <h4>Internal Storage</h4>
+                                    <ul>
+                                        <li><a href="#">Internal SSDs (2.5" SATA)</a></li>
+                                        <li><a href="#">NVMe M.2 SSDs</a></li>
+                                        <li><a href="#">Internal HDDs (3.5")</a></li>
+                                        <li><a href="#">Laptop HDDs (2.5")</a></li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown-column">
+                                    <h4>External Storage</h4>
+                                    <ul>
+                                        <li><a href="#">Portable SSDs</a></li>
+                                        <li><a href="#">External HDDs</a></li>
+                                        <li><a href="#">Rugged & Durable Drives</a></li>
+                                        <li><a href="#">Desktop External Drives</a></li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown-column">
+                                    <h4>Portable & Flash</h4>
+                                    <ul>
+                                        <li><a href="#">USB 3.0 Pen Drives</a></li>
+                                        <li><a href="#">Type-C Pen Drives</a></li>
+                                        <li><a href="#">High-Speed Flash Drives</a></li>
+                                        <li><a href="#">SD & MicroSD Cards</a></li>
+                                    </ul>
+                                </div>
+                                 <div class="dropdown-column">
+                                    <h4>Specialty Drives</h4>
+                                    <ul>
+                                        <li><a href="#">Gaming SSDs</a></li>
+                                        <li><a href="#">Enterprise & NAS Drives</a></li>
+                                        <li><a href="#">High-Endurance SSDs</a></li>
+                                        <li><a href="#">Shop All Deals</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#" class="nav-main">Special Offers</a></li>
+                    <li><a href="#" class="nav-main">Gaming Drives</a></li>
+                    <li><a href="#" class="nav-main">Business Solutions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Secure Storage, Certified Clean</h1>
+                <p>Explore our range of professionally sanitized Hard Drives, SSDs, and Pen Drives, each backed by a digital certificate of secure data erasure for your peace of mind.</p>
+                <a href="#featured-products" class="cta-button">Shop Now</a>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section class="why-us-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Your Data Security, Our Commitment</h2>
+                    <p>We provide more than storage solutions—we ensure absolute confidence with industry-leading data sanitization and quality assurance.</p>
+                </div>
+                <div class="why-us-grid">
+                    <div class="why-us-item">
+                        <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+                        <h3>NIST-Compliant Sanitization</h3>
+                        <p>All drives are wiped to government-grade standards, verified with a digital certificate.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                        <h3>Certified Quality</h3>
+                        <p>Every product undergoes rigorous testing for performance and reliability.</p>
+                    </div>
+                    <div class="why-us-item">
+                        <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"></path><path d="M15 18H9"></path><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"></path><circle cx="17" cy="18" r="2"></circle><circle cx="7" cy="18" r="2"></circle></svg></div>
+                        <h3>Secure & Swift Delivery</h3>
+                        <p>Tamper-proof packaging and expedited shipping across India.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Sections -->
+        <section class="product-section" id="featured-products" style="background-color: var(--white);">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Solid State Drives (SSDs)</h2>
+                </div>
+                <div class="product-grid">
+                    <div class="product-card"><div class="product-image-container"><img src="data:image/webp;base64,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" alt="Samsung 980 Pro SSD"></div><div class="product-info"><a href="#" class="product-title">Samsung 980 Pro NVMe Gen4 SSD</a><p class="product-specs">1TB | Up to 7,000 MB/s Read</p><div class="product-price-wrapper"><p class="product-price">₹8,500</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://www.geeky-gadgets.com/wp-content/uploads/2018/01/Crucial-MX500.jpg" alt="Crucial MX500 SATA SSD"></div><div class="product-info"><a href="#" class="product-title">Crucial MX500 2.5" SATA SSD</a><p class="product-specs">500GB | SATA III | 560 MB/s Read</p><div class="product-price-wrapper"><p class="product-price">₹3,800</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://tse1.mm.bing.net/th/id/OIP.ZjRxEfUgjWpLuahYkhfyFwHaED?rs=1&pid=ImgDetMain&o=7&rm=3"></div><div class="product-info"><a href="#" class="product-title">WD Black SN850X NVMe Gaming SSD</a><p class="product-specs">2TB | Gen4 | Heatsink Model</p><div class="product-price-wrapper"><p class="product-price">₹15,200</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://f.fcdn.app/imgs/1fd2fb/www.zonatecno.com.uy/zoteuy/f6f9/original/catalogo/92934_92934_2/1500-1500/disco-solido-ssd-interno-kingston-a400-480gb-2-5-sata-3-disco-solido-ssd-interno-kingston-a400-480gb-2-5-sata-3.jpg" alt="Kingston A400 SSD"></div><div class="product-info"><a href="#" class="product-title">Kingston A400 SATA 3 2.5" SSD</a><p class="product-specs">240GB | Great for Boot Drive</p><div class="product-price-wrapper"><p class="product-price">₹1,950</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="product-section" style="background-color: var(--light-gray-100);">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Hard Disk Drives (HDDs)</h2>
+                    </div>
+                    <div class="product-grid">
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=1770&auto=format&fit=crop" alt="Seagate Barracuda Hard Drive"></div><div class="product-info"><a href="#" class="product-title">Seagate Barracuda Internal HDD</a><p class="product-specs">2TB | 3.5-inch | 7200 RPM</p><div class="product-price-wrapper"><p class="product-price">₹4,200</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1531492746076-2ea20b952382?q=80&w=1770&auto=format&fit=crop" alt="WD Elements Portable Hard Drive"></div><div class="product-info"><a href="#" class="product-title">WD Elements Portable External HDD</a><p class="product-specs">1.5TB | USB 3.0 | PC & Mac</p><div class="product-price-wrapper"><p class="product-price">₹4,899</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1629598218763-8260193b299e?q=80&w=1829&auto=format&fit=crop" alt="Toshiba P300 HDD"></div><div class="product-info"><a href="#" class="product-title">Toshiba P300 Performance HDD</a><p class="product-specs">4TB | 3.5-inch | 5400 RPM</p><div class="product-price-wrapper"><p class="product-price">₹6,990</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1589652717462-0f33922c0199?q=80&w=1770&auto=format&fit=crop" alt="Lacie Rugged Portable HDD"></div><div class="product-info"><a href="#" class="product-title">Lacie Rugged Mini External HDD</a><p class="product-specs">2TB | Drop & Shock Resistant</p><div class="product-price-wrapper"><p class="product-price">₹8,250</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="product-section" style="background-color: var(--white);">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Pen Drives & Portable Storage</h2>
+                    </div>
+                    <div class="product-grid">
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1594298150392-7473775f0f35?q=80&w=1770&auto=format&fit=crop" alt="SanDisk Ultra Pen Drive"></div><div class="product-info"><a href="#" class="product-title">SanDisk Ultra Flair USB 3.0 Pen Drive</a><p class="product-specs">128GB | High-Speed Metal Casing</p><div class="product-price-wrapper"><p class="product-price">₹950</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1616440330132-15335a11c21b?q=80&w=1804&auto=format&fit=crop" alt="Samsung T7 Portable SSD"></div><div class="product-info"><a href="#" class="product-title">Samsung T7 Portable External SSD</a><p class="product-specs">1TB | USB 3.2 Gen 2 | Password Protection</p><div class="product-price-wrapper"><p class="product-price">₹9,300</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1614323990332-069094723223?q=80&w=1770&auto=format&fit=crop" alt="HP x765w Pen Drive"></div><div class="product-info"><a href="#" class="product-title">HP x765w USB 3.0 Pen Drive</a><p class="product-specs">64GB | Durable & Compact</p><div class="product-price-wrapper"><p class="product-price">₹550</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                        <div class="product-card"><div class="product-image-container"><img src="https://images.unsplash.com/photo-1616440330132-15335a11c21b?q=80&w=1804&auto=format&fit=crop" alt="Crucial X8 Portable SSD"></div><div class="product-info"><a href="#" class="product-title">Crucial X8 Portable SSD</a><p class="product-specs">1TB | Up to 1050MB/s Read Speed</p><div class="product-price-wrapper"><p class="product-price">₹7,800</p></div><button class="add-to-cart-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> Add to Cart</button></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="how-it-works-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>How We Guarantee Your Security</h2>
+                        <p>Our 3-step process ensures every device you purchase is not only fully functional but also completely free of any previous user data.</p>
+                    </div>
+                    <div class="why-us-grid">
+                        <div class="why-us-item">
+                            <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
+                            <h3>1. Secure Data Wipe</h3>
+                            <p>We use our proprietary CertiWipe tool to perform a NIST 800-88 compliant cryptographic erase on every single drive.</p>
+                        </div>
+                        <div class="why-us-item">
+                            <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                            <h3>2. Rigorous Health Check</h3>
+                            <p>After wiping, each drive undergoes extensive performance and health diagnostics to ensure it meets our high-quality standards.</p>
+                        </div>
+                        <div class="why-us-item">
+                            <div class="icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                            <h3>3. Digital Certification</h3>
+                            <p>A unique, tamper-proof digital certificate is generated for each drive, which you can verify on our website anytime.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="newsletter-section">
+                <div class="container">
+                    <div class="newsletter-content">
+                        <h2>Stay Updated</h2>
+                        <p>Get the latest deals, new product alerts, and insights on data security delivered right to your inbox.</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Enter your email address" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-column footer-about">
+                        <a href="index.html" class="logo" style="font-size: 2rem; display: inline-block; margin-bottom: 1rem; color: var(--white);">Certi<span>Wipe</span></a>
+                        <p>The trusted marketplace for secure, certified refurbished IT assets. Committed to a safer, sustainable circular economy.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                            <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+                            <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Shop by Category</h4>
+                        <ul>
+                            <li><a href="#">Internal SSDs</a></li>
+                            <li><a href="#">External HDDs</a></li>
+                            <li><a href="#">NVMe Drives</a></li>
+                            <li><a href="#">USB Pen Drives</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Shipping & Returns</a></li>
+                            <li><a href="#">Warranty Information</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#">Our Mission</a></li>
+                            <li><a href="#">Data Security Promise</a></li>
+                            <li><a href="#">Sell Your Device</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    &copy; 2025 CertiWipe Technologies Pvt. Ltd. All rights reserved. Your data security is our priority.
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Toast Notification -->
+        <div id="toast-notification" class="toast">Item added to cart!</div>
+
+        <!-- Cart Overlay -->
+        <div id="cart-overlay" class="cart-overlay">
+            <div class="cart-container">
+                <div class="cart-header">
+                    <h2>Shopping Cart</h2>
+                    <button class="close-cart-btn">&times;</button>
+                </div>
+                <div class="cart-body">
+                    <div id="cart-items-container">
+                        <!-- Dynamic cart items will be injected here -->
+                    </div>
+                    <div id="empty-cart-message" style="display: none;">
+                        <h3>Your cart is empty.</h3>
+                        <p>Looks like you haven't added anything yet.</p>
+                    </div>
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">₹0.00</span>
+                    </div>
+                    <button class="checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const cartIcon = document.querySelector('.cart-icon-wrapper');
+                const cartOverlay = document.getElementById('cart-overlay');
+                const closeCartBtn = document.querySelector('.close-cart-btn');
+                const cartCountEl = document.querySelector('.cart-count');
+                const cartItemsContainer = document.getElementById('cart-items-container');
+                const cartSubtotalEl = document.getElementById('cart-subtotal');
+                const emptyCartMessage = document.getElementById('empty-cart-message');
+                const toastEl = document.getElementById('toast-notification');
+                const checkoutBtn = document.querySelector('.checkout-btn');
+
+
+                let cart = [];
+
+                // Open Cart
+                cartIcon.addEventListener('click', () => {
+                    cartOverlay.classList.add('active');
+                    document.body.classList.add('no-scroll');
+                });
+
+                // Close Cart
+                const closeCart = () => {
+                    cartOverlay.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
+                }
+                closeCartBtn.addEventListener('click', closeCart);
+                cartOverlay.addEventListener('click', (event) => {
+                    if (event.target === cartOverlay) {
+                        closeCart();
+                    }
+                });
+
+                // Add to cart functionality
+                document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const card = event.target.closest('.product-card');
+                        const product = {
+                            id: Date.now() + Math.random(), // simple unique id
+                            image: card.querySelector('img').src,
+                            title: card.querySelector('.product-title').textContent,
+                            specs: card.querySelector('.product-specs').textContent,
+                            price: card.querySelector('.product-price').textContent,
+                        };
+                        
+                        cart.push(product);
+                        updateCart();
+                        showToast('Item added to cart!');
+                    });
+                });
+
+                function showToast(message) {
+                    toastEl.textContent = message;
+                    toastEl.classList.add('show');
+                    setTimeout(() => {
+                        toastEl.classList.remove('show');
+                    }, 2500);
+                }
+
+                function updateCart() {
+                    renderCartItems();
+                    updateCartCounter();
+                    updateCartTotals();
+                }
+
+                function updateCartCounter() {
+                    cartCountEl.textContent = cart.length;
+                    if (cart.length > 0) {
+                        cartCountEl.classList.add('active');
+                    } else {
+                        cartCountEl.classList.remove('active');
+                    }
+                }
+
+                function renderCartItems() {
+                    cartItemsContainer.innerHTML = '';
+                    if (cart.length === 0) {
+                        emptyCartMessage.style.display = 'block';
+                    } else {
+                        emptyCartMessage.style.display = 'none';
+                        cart.forEach((item, index) => {
+                            const itemEl = document.createElement('div');
+                            itemEl.classList.add('cart-item');
+                            itemEl.innerHTML = `
+                                <img src="${item.image}" alt="${item.title}">
+                                <div class="cart-item-details">
+                                    <h3>${item.title}</h3>
+                                    <p>${item.specs}</p>
+                                    <button class="remove-item-btn" data-id="${item.id}">Remove</button>
+                                </div>
+                                <span class="cart-item-price">${item.price}</span>
+                            `;
+                            cartItemsContainer.appendChild(itemEl);
+                        });
+                    }
+                }
+
+                cartItemsContainer.addEventListener('click', (event) => {
+                    if(event.target.classList.contains('remove-item-btn')) {
+                        const itemId = Number(event.target.dataset.id);
+                        cart = cart.filter(item => item.id !== itemId);
+                        updateCart();
+                    }
+                });
+
+                function updateCartTotals() {
+                    const subtotal = cart.reduce((acc, item) => {
+                        const price = parseFloat(item.price.replace('₹', '').replace(/,/g, ''));
+                        return acc + price;
+                    }, 0);
+                    cartSubtotalEl.textContent = `₹${subtotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                }
+
+                checkoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (cart.length === 0) {
+                        showToast('Your cart is empty.');
+                        return;
+                    }
+                    showToast('Please log in to proceed.');
+                    setTimeout(() => {
+                        window.location.href = 'login1.html';
+                    }, 2000); 
+                });
+
+
+                updateCart(); // Initial render
+            });
+        </script>
+    </body>
+    </html>

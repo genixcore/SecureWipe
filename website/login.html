@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SecureDataWiping</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <a href="index.html" class="back-link">
+                    <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12,19 5,12 12,5"></polyline>
+                    </svg>
+                    Back to Home
+                </a>
+                
+                <div class="login-logo">
+                    <div class="login-logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="login-title" id="loginTitle">Welcome Back</h2>
+                <p class="login-subtitle" id="loginSubtitle">Sign in to access your secure data wiping dashboard</p>
+            </div>
+
+            <form class="login-form" action="serial.html">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <input type="email" class="form-input" placeholder="john@company.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="m7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <input type="password" class="form-input" placeholder="••••••••" id="passwordInput" required>
+                        <button type="button" class="password-toggle">
+                            <svg class="eye-icon" id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options" id="loginOptions">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="rememberMe" class="checkbox">
+                        <label for="rememberMe" class="checkbox-label">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p class="switch-mode">
+                    <span id="switchText">Don't have an account? </span>
+                    <button type="button" class="switch-btn" id="switchBtn">Sign up</button>
+                </p>
+            </div>
+
+            <div class="security-info">
+                <p class="security-text">Secured by enterprise-grade encryption</p>
+                <div class="certifications">
+                    <span>DOD 5220.22-M</span>
+                    <span>•</span>
+                    <span>NIST 800-88</span>
+                    <span>•</span>
+                    <span>ISO 27001</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-bottom">
+            <p class="copyright">© 2025 SecureDataWiping. Your data security is our priority.</p>
+        </div>
+    </div>
+</body>
+</html>

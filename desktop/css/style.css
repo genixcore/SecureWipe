@@ -1,0 +1,193 @@
+/* css/style.css - FINAL VERSION FOR FLEXIBLE LAYOUT (STICKY FOOTER) */
+
+/* --- Base Styles --- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    /* CRITICAL: Must be 100vh to ensure the whole page area is used */
+    min-height: 100vh; 
+    background-color: #f8f9fa; 
+    color: #333;
+    /* Allow the whole window to scroll if content exceeds 100vh */
+    overflow-y: auto; 
+}
+
+/* --- Header and Footer (Dark Blue Theme) --- */
+.app-header, .app-footer {
+    background-color: #003366; /* Dark Blue */
+    color: #ffffff;
+    padding: 15px 25px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+    z-index: 10; 
+}
+
+.app-header h1, .app-footer p {
+    margin: 0;
+    font-weight: 300; 
+}
+
+/* --- Main Content Area (White Body) --- */
+.app-main-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    /* Aligns content to the top (better for long forms), but FLEX-GROW fills the vertical space */
+    align-items: flex-start; 
+    padding: 20px 0; 
+    background-color: #ffffff;
+    position: relative; 
+    z-index: 0;
+    width: 100%; 
+    box-sizing: border-box; /* IMPORTANT */
+}
+
+/* --- STICKY FOOTER SOLUTION (Applies to pages like splash.html) --- */
+/* If a page's body is the direct container, use this trick */
+.splash-layout .app-main-content {
+    /* If you set the main content container itself to take up all space, 
+       the footer will be pushed down by the margin */
+    align-items: center; /* Re-center items for short pages like splash */
+    margin-bottom: auto; /* Pushes the footer down when content is short */
+}
+
+/* --- Card/Panel Styling (All Pages) --- */
+.card-panel {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 400px; 
+    width: 90%; 
+    border: 1px solid #eee; 
+    position: relative; 
+    z-index: 2; 
+    box-sizing: border-box;
+}
+
+.card-panel h2 {
+    color: #003366; 
+    margin-bottom: 30px;
+    font-weight: 600; 
+}
+
+/* --- Input and Form Styles --- */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px; 
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+   
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: #007bff; 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* --- Buttons --- */
+.btn-primary {
+    background-color: #0056b3; 
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 15px;
+    width: 100%;
+    position: relative;
+    z-index: 3; 
+}
+
+.btn-primary:hover {
+    background-color: #004085; 
+    transform: translateY(-1px);
+}
+
+/* --- Utility and Links --- */
+.genix-logo-container {
+    margin-bottom: 25px;
+}
+.genix-logo-container img {
+    max-width: 90px;
+    height: auto;
+}
+
+/* css/style.css (Add or modify the link-text section) */
+
+.link-text {
+    color: #007bff; 
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    /* --- FIX: Ensure the link is aligned correctly --- */
+    align-self: center; /* Ensures vertical alignment in a flex container */
+    margin-left: auto; /* Pushes the link to the far right of its container */
+    /* ------------------------------------------------ */
+}
+
+.link-text:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+.checkbox-group, .checkbox-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 3; 
+}
+
+.link-small {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* --- Loading Spinner Styles --- */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1); 
+    border-left-color: #0056b3; 
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.2s linear infinite; 
+    margin: 20px auto; 
+}
+
+/* Spinner Animation Keyframes */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+

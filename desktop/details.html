@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GenixWipe - Sanitization Certificate Details</title>
+    <!-- Always include viewport meta tag for responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* --- General Layout and Containers --- */
+        .details-page-container {
+            max-width: 950px; /* Slightly wider for the split content */
+            overflow: hidden; 
+        }
+        
+        /* --- Form Step Styling --- */
+        .form-step {
+            display: none; 
+            padding: 20px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .form-step.active {
+            display: block; 
+        }
+        
+        /* --- NEW: Split Content Container (Flexbox) --- */
+        .form-content-split {
+            display: flex;
+            gap: 40px; /* Space between the columns */
+            width: 100%;
+        }
+
+        /* NEW: Column Styles */
+        .form-column {
+            flex: 1; /* Both columns take up equal space */
+            min-width: 45%; 
+        }
+
+        /* --- Section Headers (Kept for visual break) --- */
+        .form-section-header {
+            background-color: #f1f1f1;
+            color: #003366;
+            padding: 10px 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 2px solid #0056b3;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+        
+        /* --- Form Grid for 2-column input layout (used inside the split columns) --- */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px 30px;
+            margin-bottom: 20px;
+        }
+        .grid-full-width {
+            grid-column: 1 / -1; 
+        }
+        .checkbox-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* --- Navigation & Progress Bar --- */
+        .navigation-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .nav-progress {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .step-indicator {
+            height: 8px;
+            width: 150px;
+            background-color: #ddd;
+            margin: 0 5px;
+            border-radius: 4px;
+            transition: background-color 0.4s;
+        }
+        .step-indicator.active {
+            background-color: #0056b3;
+        }
+        /* Basic input group styling (assuming the rest is in style.css) */
+        .input-group input[type="text"], .input-group input[type="date"], .input-group textarea, .input-group input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            text-align: left;
+        }
+        .btn-primary {
+             padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            background-color: #0056b3;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Responsive adjustments for the split layout */
+        @media (max-width: 900px) {
+            .form-content-split {
+                flex-direction: column; 
+                gap: 0;
+            }
+            .details-grid {
+                grid-template-columns: 1fr; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <h1>Sanitization Certificate Details (Step <span id="current-step-num">1</span> of 3)</h1>
+    </header>
+
+    <main class="app-main-content">
+        <div class="card-panel details-page-container">
+            
+            <div class="nav-progress">
+                <div id="indicator-1" class="step-indicator active"></div>
+                <div id="indicator-2" class="step-indicator"></div>
+                <div id="indicator-3" class="step-indicator"></div>
+            </div>
+
+            <form id="details-form">
+                
+                <div class="form-step active" data-step="1">
+                    <div class="form-content-split">
+                        
+                        <div class="form-column">
+                            <div class="form-section-header">PERSON PERFORMING SANITIZATION</div>
+                            <div class="details-grid">
+                                <div class="input-group"><label for="name">Name:</label><input type="text" id="name" name="name" placeholder="Enter name"></div>
+                                <div class="input-group"><label for="title">Title:</label><input type="text" id="title" name="title" placeholder="Enter title"></div>
+                                <div class="input-group"><label for="organization">Organization:</label><input type="text" id="organization" name="organization" placeholder="Enter organization"></div>
+                                <div class="input-group"><label for="location">Location:</label><input type="text" id="location" name="location" placeholder="Enter location"></div>
+                                <div class="input-group grid-full-width"><label for="phone">Phone:</label><input type="tel" id="phone" name="phone" placeholder="Enter phone number"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-column">
+                            <div class="form-section-header">MEDIA INFORMATION</div>
+                            <div class="details-grid">
+                                <div class="input-group"><label for="make-vendor">Make/Vendor:</label><input type="text" id="make-vendor" name="make-vendor" placeholder="Enter make or vendor"></div>
+                                <div class="input-group"><label for="model-number">Model Number:</label><input type="text" id="model-number" name="model-number" placeholder="Enter model number"></div>
+                                <div class="input-group"><label for="serial-number">Serial Number:</label><input type="text" id="serial-number" name="serial-number" placeholder="Enter serial number"></div>
+                                <div class="input-group"><label for="media-property-number">Media Property Number:</label><input type="text" id="media-property-number" name="media-property-number" placeholder="Enter property number"></div>
+                                
+                                <div class="input-group grid-full-width">
+                                    <label for="media-type">Media Type: <span class="link-small" style="font-weight: 400;">(Source)</span></label>
+                                    <input type="text" id="media-type" name="media-type" placeholder="Enter media type and source">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group grid-full-width" style="margin-top: 20px;">
+                        <label>Classification: <span class="link-small" style="font-weight: 400;">(Data Backed Up:)</span></label>
+                        <div class="checkbox-row" style="justify-content: flex-start;">
+                            <label><input type="radio" name="backed_up" value="yes"> Yes</label>
+                            <label><input type="radio" name="backed_up" value="no"> No</label>
+                            <label><input type="radio" name="backed_up" value="unknown"> Unknown</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="2">
+                    <div class="form-content-split">
+                        
+                        <div class="form-column">
+                            <div class="form-section-header">METHOD TYPE & USED</div>
+                            <div class="input-group grid-full-width">
+                                <label>Method Type:</label>
+                                <div class="checkbox-row" style="justify-content: flex-start;">
+                                    <label><input type="checkbox" name="method_type" value="clear"> Clear</label>
+                                    <label><input type="checkbox" name="method_type" value="purge"> Purge</label>
+                                    <label><input type="checkbox" name="method_type" value="damage"> Damage</label>
+                                    <label><input type="checkbox" name="method_type" value="destruct"> Destruct</label>
+                                </div>
+                            </div>
+                            <div class="input-group grid-full-width">
+                                <label>Method Used: <span class="link-small" style="font-weight: 400;">(Select all that apply)</span></label>
+                                <div class="checkbox-row" style="justify-content: flex-start;">
+                                    <label><input type="checkbox" name="method_used" value="degauss"> Degauss</label>
+                                    <label><input type="checkbox" name="method_used" value="overwrite"> Overwrite</label>
+                                    <label><input type="checkbox" name="method_used" value="block-erase"> Block Erase</label>
+                                    <label><input type="checkbox" name="method_used" value="crypto-erase"> Crypto Erase</label>
+                                    <label><input type="checkbox" name="method_used" value="other"> Other</label>
+                                </div>
+                            </div>
+                            <div class="input-group grid-full-width">
+                                <label for="method-details">Method Details:</label>
+                                <input type="text" id="method-details" name="method-details" placeholder="Specific details on method used">
+                            </div>
+                        </div>
+
+                        <div class="form-column">
+                            <div class="form-section-header">VERIFICATION & TOOL USED</div>
+                            <div class="input-group grid-full-width">
+                                <label for="tool-used">Tool Used: <span class="link-small" style="font-weight: 400;">(Include version)</span></label>
+                                <input type="text" id="tool-used" name="tool-used" placeholder="Tool Used (e.g., SecureWipe v1.2)">
+                            </div>
+                            
+                            <div class="input-group grid-full-width">
+                                <label>Verification Method:</label>
+                                <div class="checkbox-row" style="justify-content: flex-start;">
+                                    <label><input type="radio" name="verification" value="full"> Full</label>
+                                    <label><input type="radio" name="verification" value="quick-sampling"> Quick Sampling</label>
+                                    <label><input type="radio" name="verification" value="other"> Other</label>
+                                </div>
+                                <input type="text" id="other-verification" name="other-verification" placeholder="Specify if 'Other' verification" style="margin-top: 10px;">
+                            </div>
+                            
+                            <div class="input-group grid-full-width">
+                                <label for="post-sanitization">Post Sanitization Classification:</label>
+                                <input type="text" id="post-sanitization" name="post-sanitization" placeholder="Enter classification">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-header">NOTES</div>
+                    <div class="input-group grid-full-width">
+                        <textarea id="notes" name="notes" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; resize: vertical;" placeholder="Add any relevant notes or details here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="3">
+                    <div class="form-section-header">MEDIA DESTINATION</div>
+                    <div class="input-group grid-full-width">
+                        <div class="checkbox-row" style="justify-content: flex-start;">
+                            <label><input type="checkbox" name="destination" value="internal-reuse"> Internal Reuse</label>
+                            <label><input type="checkbox" name="destination" value="external-reuse"> External Reuse</label>
+                            <label><input type="checkbox" name="destination" value="recycling"> Recycling Facility</label>
+                            <label><input type="checkbox" name="destination" value="manufacturer"> Manufacturer</label>
+                            <label><input type="checkbox" name="destination" value="other-destination"> Other (specify in details area)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group grid-full-width">
+                        <label for="destination-details">Details:</label>
+                        <textarea id="destination-details" name="destination-details" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; resize: vertical;" placeholder="Use this area for specifying 'Other' options or adding comprehensive details..."></textarea>
+                    </div>
+
+                    <div class="input-group grid-full-width" style="margin-top: 25px;">
+                        <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500;">
+                            <input type="checkbox" id="terms-accept" name="terms-accept" required style="width: auto; margin-right: 15px;">
+                            I confirm that all details are correct and I accept the <a href="#" style="margin-left: 5px; color: #0056b3; text-decoration: underline;">Terms & Conditions</a>.
+                        </label>
+                    </div>
+                    <div class="form-section-header">SIGNATURE & VALIDATION (Digital/Physical)</div>
+                    <div class="details-grid">
+                        <div class="input-group">
+                            <label for="signature">Signature (Name/Electronic ID):</label>
+                            <input type="text" id="signature" name="signature" placeholder="Signature/ID of person performing sanitization">
+                        </div>
+                        <div class="input-group">
+                            <label for="date-sanitization">Date:</label>
+                            <input type="date" id="date-sanitization" name="date-sanitization">
+                        </div>
+                        <div class="input-group">
+                            <label for="validation-name">Validation Name:</label>
+                            <input type="text" id="validation-name" name="validation-name" placeholder="Name of Validator">
+                        </div>
+                        <div class="input-group">
+                            <label for="validation-title">Title:</label>
+                            <input type="text" id="validation-title" name="validation-title" placeholder="Title of Validator">
+                        </div>
+                        <div class="input-group">
+                            <label for="validation-org">Organization:</label>
+                            <input type="text" id="validation-org" name="validation-org" placeholder="Organization of Validator">
+                        </div>
+                        <div class="input-group">
+                            <label for="validation-phone">Phone:</label>
+                            <input type="text" id="validation-phone" name="validation-phone" placeholder="Phone of Validator">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="navigation-bar">
+                    <button type="button" class="btn-primary" id="prev-btn" style="width: 150px; background-color: #6c757d;" disabled>
+                        Previous
+                    </button>
+                    <button type="button" class="btn-primary" id="next-btn" style="width: 150px;">
+                        Next
+                    </button>
+                    <button type="submit" class="btn-primary" id="submit-btn" style="width: 150px; display: none;">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 GenixWipe. All rights reserved.</p>
+    </footer>
+    
+    <script>
+    // CRITICAL FIX: Changing from DOMContentLoaded to window.onload to ensure all resources are loaded 
+    // before the wizard logic runs, preventing race conditions with the hosting environment.
+    window.onload = function() {
+        // --- MULTI-STEP WIZARD JAVASCRIPT LOGIC ---
+        const steps = document.querySelectorAll('.form-step');
+        const indicators = document.querySelectorAll('.step-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const stepNum = document.getElementById('current-step-num');
+        const detailsForm = document.getElementById('details-form');
+        
+        let currentStep = 1;
+
+        // Function to update the view and forcefully focus the first input
+        function updateSteps() {
+            steps.forEach(step => step.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+
+            const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+            if (currentStepElement) {
+                currentStepElement.classList.add('active');
+                
+                // Force focus on the first interactive input of the new step
+                // Increased delay to 100ms for extra robustness in hosted environments.
+                setTimeout(() => {
+                    const firstInput = currentStepElement.querySelector(
+                        'input[type="text"], input[type="tel"], input[type="date"], textarea'
+                    );
+                    if (firstInput) {
+                        firstInput.focus();
+                        // Optional: Move cursor to the end of the text if it's already filled
+                        if (firstInput.value.length > 0 && (firstInput.type === 'text' || firstInput.tagName === 'TEXTAREA')) {
+                             firstInput.setSelectionRange(firstInput.value.length, firstInput.value.length);
+                        }
+                    }
+                }, 100); // 100ms delay for DOM update completion
+            }
+            
+            const currentIndicatorElement = document.getElementById(`indicator-${currentStep}`);
+            if (currentIndicatorElement) {
+                currentIndicatorElement.classList.add('active');
+            }
+            
+            stepNum.textContent = currentStep;
+
+            prevBtn.disabled = currentStep === 1;
+            
+            if (currentStep === steps.length) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+        
+        // --- FALLBACK AGGRESSIVE FOCUS CORRECTION (kept as extra measure) ---
+        detailsForm.addEventListener('click', (event) => {
+            const target = event.target;
+            // Target standard text inputs, date, and tel fields
+            if (target.matches('input:not([type="radio"]):not([type="checkbox"]), textarea, input[type="date"], input[type="tel"]')) {
+                setTimeout(() => {
+                    if (document.activeElement !== target) {
+                        target.focus();
+                    }
+                }, 0);
+            }
+        });
+
+
+        // Event listeners for navigation
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length) {
+                currentStep++;
+                updateSteps();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateSteps();
+            }
+        });
+
+        // Form submission handler: Collects data and saves it before navigating.
+        detailsForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            if (currentStep === steps.length) {
+                const termsCheckbox = document.getElementById('terms-accept');
+                
+                if (termsCheckbox && termsCheckbox.checked) {
+                    
+                    // --- Data Collection and Storage Logic ---
+                    const formData = {};
+                    const form = document.getElementById('details-form');
+                    const elements = form.elements;
+
+                    for (let i = 0; i < elements.length; i++) {
+                        const element = elements[i];
+                        const key = element.name || element.id;
+
+                        if (!key || element.type === 'submit' || element.type === 'button') {
+                            continue;
+                        }
+                        
+                        if (element.type === 'radio') {
+                            if (element.checked) {
+                                formData[key] = element.value;
+                            }
+                        } else if (element.type === 'checkbox') {
+                            if (element.checked) {
+                                if (!formData[key]) {
+                                    formData[key] = [];
+                                }
+                                formData[key].push(element.value);
+                            }
+                        } else {
+                             // Handle text, date, textarea, tel inputs
+                            formData[key] = element.value;
+                        }
+                    }
+                    
+                    // Save the complete form data string to localStorage
+                    localStorage.setItem('certificateDetails', JSON.stringify(formData));
+                    
+                    // Navigate to the next page in the flow
+                    window.location.href = 'wipe-prep.html'; 
+                    
+                } else if (termsCheckbox) {
+                    // Replaced alert() with console.error as alerts are not allowed
+                    console.error('ACTION REQUIRED: Please accept the Terms and Conditions to proceed with the wipe.');
+                } 
+            }
+        });
+
+        // Initialize the first step (REQUIRED to show Step 1 on load)
+        updateSteps();
+    };
+</script>
+</body>
+</html>
